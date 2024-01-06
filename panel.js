@@ -9,36 +9,9 @@
     app.prototype = {
 
         defineStyles: function() {
-            var style = document.createElement('style');
-            style.innerHTML = `.h4ckerContainer { 
-                                    position: fixed;
-                                    width: 100%;
-                                    min-height: 300px;
-                                    bottom: 0px;
-                                    background-color: white;
-                                    border-top: 1px solid gray;
-                                    z-index: 2000;
-                                }
-                                .h4ckerHistoryBlock {
-                                    max-height: 265px;
-                                }
-                                .h4ckerCommandBlock {
-                                    display: flex;
-                                    flex-wrap: nowrap;
-                                }
-                                .h4ckerCommandIndicator {
-                                    padding-right: 2px;
-                                }
-                                .h4ckerCommandInput {
-                                    width: 100%;
-                                    height: 30px;
-                                    border: none;
-                                }
-                                .h4ckerCommandInput:focus-visible {
-                                    outline: none;
-                                }
-
-                                .`;
+            var style = document.createElement('link');
+            style.rel = "stylesheet";
+            style.href = new URL("style.css", document.currentScript.src);
             document.getElementsByTagName('head')[0].appendChild(style);
         },
 
