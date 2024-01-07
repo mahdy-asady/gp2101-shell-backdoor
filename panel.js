@@ -34,8 +34,10 @@
                         },
                         cache:false,
                         success:function(response){
-                            myApp.historyBlock.innerHTML = "";
+                            myApp.historyBlock.innerHTML += "$ " + myApp.commandInput.value + "\n";
+                            myApp.commandInput.value = "";
                             myApp.isRunning = 1;
+                            myApp.writeFinished = 0;
                             myApp.intervalID=window.setInterval(myApp.responseHandler ,300);
                         },
                         error:function(xhr)
@@ -66,11 +68,15 @@
                             if (tmp.search("finish") > -1) {
                                 if (mon_diag_status == "1") {
                                     myApp.isRunning = 0;
+                                    myApp.tmpBlock.innerHTML = message;
                                 } else {
                                     var stopID = window.clearInterval(myApp.intervalID);
+                                    if(myApp.writeFinished == 0) {
+                                        myApp.writeFinished = 1;
+                                        myApp.historyBlock.innerHTML += message;
+                                        myApp.tmpBlock.innerHTML = "";
+                                    }
                                 }
-                                console.log(myApp.historyBlock);
-                                myApp.historyBlock.innerHTML = message;
                             }
 
                         } else
