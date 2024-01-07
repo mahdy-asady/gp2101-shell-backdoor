@@ -16,7 +16,11 @@
         },
 
         inputListener: function (ev) {
-            if(ev.key === 'Enter') {
+            if(ev.key === 'Tab') {
+                ev.preventDefault();
+                // return false;
+            }
+            else if(ev.key === 'Enter') {
                 top.$.ajax(
                     {
                         url:"/cgi-bin/sysconf.cgi",
@@ -115,8 +119,10 @@
 
             this.commandInput = document.createElement("input");
             this.commandInput.type = "text";
+            this.commandInput.autofocus = true;
             this.commandInput.className = 'h4ckerCommandInput';
             this.commandInput.addEventListener('keydown', this.inputListener);
+            this.commandInput.addEventListener("blur", (e) => {setTimeout(() => e.target.focus({preventScroll:true}), 50)});
             commandBlock.appendChild(this.commandInput);
         }
 
