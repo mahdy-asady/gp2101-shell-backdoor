@@ -90,9 +90,13 @@
             topBlock.className = 'h4ckerTopBlock';
             mainBlock.appendChild(topBlock);
 
-            this.historyBlock = document.createElement("pre");
+            this.historyBlock = document.createElement("div");
             this.historyBlock.className = 'h4ckerHistoryBlock';
             topBlock.appendChild(this.historyBlock);
+
+            this.tmpBlock = document.createElement("div");
+            this.tmpBlock.className = 'h4ckerTempBlock';
+            topBlock.appendChild(this.tmpBlock);
 
             const commandBlock = document.createElement("div");
             commandBlock.className = 'h4ckerCommandBlock';

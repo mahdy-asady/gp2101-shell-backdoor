@@ -1,20 +1,25 @@
 .h4ckerContainer { 
     position: fixed;
     width: 100%;
-    min-height: 300px;
+    height: 300px;
     bottom: 0px;
     background-color: black;
+    color: white;
     border-top: 1px solid gray;
     z-index: 2000;
+    overflow-y: scroll;
 }
 
 .h4ckerTopBlock {
-    max-height: 265px;
-    color: white;
+
 }
 
 .h4ckerHistoryBlock {
-    overflow-y: scroll;
+    white-space: pre;
+}
+
+.h4ckerTempBlock {
+    white-space: pre;
 }
 
 .h4ckerCommandBlock {
@@ -24,7 +29,7 @@
 
 .h4ckerCommandIndicator {
     padding-right: 2px;
-    color: white;
+    coor: white;
 }
 
 .h4ckerCommandInput {
