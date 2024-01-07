@@ -16,6 +16,7 @@
         },
 
         inputListener: function (ev) {
+            myApp.mainBlock.scrollTo(0, myApp.mainBlock.scrollHeight);
             if(ev.key === 'Tab') {
                 ev.preventDefault();
                 // return false;
@@ -81,6 +82,7 @@
                                         myApp.tmpBlock.innerHTML = "";
                                     }
                                 }
+                                myApp.mainBlock.scrollTo(0, myApp.mainBlock.scrollHeight);
                             }
 
                         } else
@@ -92,13 +94,13 @@
         },
 
         showElementBlock: function() {
-            const mainBlock = document.createElement("div");
-            mainBlock.className = 'h4ckerContainer';
-            document.body.appendChild(mainBlock);
+            this.mainBlock = document.createElement("div");
+            this.mainBlock.className = 'h4ckerContainer';
+            document.body.appendChild(this.mainBlock);
             
             const topBlock = document.createElement("div");
             topBlock.className = 'h4ckerTopBlock';
-            mainBlock.appendChild(topBlock);
+            this.mainBlock.appendChild(topBlock);
 
             this.historyBlock = document.createElement("div");
             this.historyBlock.className = 'h4ckerHistoryBlock';
@@ -110,7 +112,7 @@
 
             const commandBlock = document.createElement("div");
             commandBlock.className = 'h4ckerCommandBlock';
-            mainBlock.appendChild(commandBlock);
+            this.mainBlock.appendChild(commandBlock);
 
             const commandIndicator = document.createElement("span");
             commandIndicator.className = 'h4ckerCommandIndicator';
