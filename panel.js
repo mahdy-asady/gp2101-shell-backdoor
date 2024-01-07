@@ -96,6 +96,7 @@
         showElementBlock: function() {
             this.mainBlock = document.createElement("div");
             this.mainBlock.className = 'h4ckerContainer';
+            this.mainBlock.addEventListener("click", () => this.commandInput.focus({preventScroll:true}));
             document.body.appendChild(this.mainBlock);
             
             const topBlock = document.createElement("div");
@@ -124,7 +125,7 @@
             this.commandInput.autofocus = true;
             this.commandInput.className = 'h4ckerCommandInput';
             this.commandInput.addEventListener('keydown', this.inputListener);
-            this.commandInput.addEventListener("blur", (e) => {setTimeout(() => e.target.focus({preventScroll:true}), 50)});
+            this.commandInput.addEventListener("blur", (e) => {setTimeout(() => this.commandInput.focus({preventScroll:true}), 50)});
             commandBlock.appendChild(this.commandInput);
         }
 
