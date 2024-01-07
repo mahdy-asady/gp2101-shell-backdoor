@@ -8,9 +8,13 @@
     z-index: 2000;
 }
 
-.h4ckerHistoryBlock {
+.h4ckerTopBlock {
     max-height: 265px;
     color: white;
+}
+
+.h4ckerHistoryBlock {
+    overflow-y: scroll;
 }
 
 .h4ckerCommandBlock {

