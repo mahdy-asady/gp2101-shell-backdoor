@@ -110,7 +110,7 @@
 
             const commandIndicator = document.createElement("span");
             commandIndicator.className = 'h4ckerCommandIndicator';
-            commandIndicator.innerHTML = '$';
+            commandIndicator.innerHTML = '$&nbsp;';
             commandBlock.appendChild(commandIndicator);
 
             this.commandInput = document.createElement("input");
