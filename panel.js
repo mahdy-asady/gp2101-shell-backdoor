@@ -31,31 +31,7 @@
                     return;
                 }
                 myApp.mainBlock.classList.add("busy");
-                top.$.ajax(
-                    {
-                        url:"/cgi-bin/sysconf.cgi",
-                        data:{
-                            page:"ajax.asp",
-                            action:"save_monitor_diagnostic",
-                            mon_diag_type:0,
-                            mon_diag_addr:'";cd `cat /tmp/sh_dir`; ' + cmd + ' 2>&1 > /tmp/mon_diag.log 2>&1; pwd > /tmp/sh_dir; cmscfg -s -n mon_diag_status -v 0)& #',
-                            mon_ping_num:1,
-                            mon_ping_size:56,
-                            mon_ping_timeout:10,
-                            mon_tracert_hops:30,
-                            mon_diag_protocol_type:4,
-                            time:(new Date()).getTime()
-                        },
-                        cache:false,
-                        success:function(response){
-                            myApp.isRunning = 1;
-                            myApp.writeFinished = 0;
-                            myApp.intervalID=window.setInterval(myApp.responseHandler ,300);
-                        },
-                        error:function(xhr)
-                        {}
-                    }
-                );
+                sendCommand(cmd);
             }
         },
 
@@ -140,6 +116,34 @@
         }
 
     };
+
+    let sendCommand = (cmd) => {
+        top.$.ajax(
+            {
+                url:"/cgi-bin/sysconf.cgi",
+                data:{
+                    page:"ajax.asp",
+                    action:"save_monitor_diagnostic",
+                    mon_diag_type:0,
+                    mon_diag_addr:'";cd `cat /tmp/sh_dir`; ' + cmd + ' 2>&1 > /tmp/mon_diag.log; pwd > /tmp/sh_dir; cmscfg -s -n mon_diag_status -v 0)& #',
+                    mon_ping_num:1,
+                    mon_ping_size:56,
+                    mon_ping_timeout:10,
+                    mon_tracert_hops:30,
+                    mon_diag_protocol_type:4,
+                    time:(new Date()).getTime()
+                },
+                cache:false,
+                success:function(response){
+                    myApp.isRunning = 1;
+                    myApp.writeFinished = 0;
+                    myApp.intervalID=window.setInterval(myApp.responseHandler ,500);
+                },
+                error:function(xhr)
+                {}
+            }
+        );
+    }
 
     let builtinCommands = (cmd) => {
         switch (cmd) {
