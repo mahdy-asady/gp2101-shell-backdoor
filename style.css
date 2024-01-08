@@ -30,7 +30,7 @@
 }
 
 .h4ckerCommandIndicator {
-
+    white-space: nowrap;
 }
 
 .h4ckerCommandInput {

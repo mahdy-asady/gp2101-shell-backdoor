@@ -4,6 +4,7 @@
         console.log('My app constructor');
         this.defineStyles();
         this.showElementBlock();
+        this.updateCmdPrompt();
     };
 
     app.prototype = {
@@ -23,8 +24,9 @@
             }
             else if(ev.key === 'Enter') {
                 let cmd = myApp.commandInput.value;
+                console.log("Send command: " + cmd);
 
-                myApp.historyBlock.innerHTML += "$ " + myApp.commandInput.value + "\n";
+                myApp.historyBlock.innerHTML += myApp.commandIndicator.innerHTML + cmd + "\n";
                 myApp.commandInput.value = "";
 
                 if(builtinCommands(cmd)) {
@@ -33,6 +35,11 @@
                 myApp.mainBlock.classList.add("busy");
                 sendCommand(cmd);
             }
+        },
+
+        updateCmdPrompt: function () {
+            this.promptUpdating = 1;
+            sendCommand("pwd");
         },
 
         responseHandler: function () {
@@ -56,16 +63,22 @@
                             if (tmp.search("finish") > -1) {
                                 if (mon_diag_status == "1") {
                                     myApp.isRunning = 0;
-                                    if(!myApp.writeFinished) {
+                                    if(!myApp.writeFinished && !myApp.promptUpdating) {
                                         myApp.tmpBlock.innerHTML = message;
                                     }
                                 } else {
                                     var stopID = window.clearInterval(myApp.intervalID);
                                     if(!myApp.writeFinished) {
                                         myApp.writeFinished = 1;
-                                        myApp.historyBlock.innerHTML += message;
-                                        myApp.tmpBlock.innerHTML = "";
                                         myApp.mainBlock.classList.remove("busy");
+                                        if(!myApp.promptUpdating) {
+                                            myApp.historyBlock.innerHTML += message;
+                                            myApp.tmpBlock.innerHTML = "";
+                                            myApp.updateCmdPrompt();
+                                        }else {
+                                            myApp.promptUpdating = 0;
+                                            myApp.commandIndicator.innerHTML = message.replace(/^\n|\n$/g, '') + " $&nbsp;";
+                                        }
                                     }
                                 }
                                 myApp.mainBlock.scrollTo(0, myApp.mainBlock.scrollHeight);
@@ -101,10 +114,10 @@
             commandBlock.className = 'h4ckerCommandBlock';
             this.mainBlock.appendChild(commandBlock);
 
-            const commandIndicator = document.createElement("span");
-            commandIndicator.className = 'h4ckerCommandIndicator';
-            commandIndicator.innerHTML = '$&nbsp;';
-            commandBlock.appendChild(commandIndicator);
+            this.commandIndicator = document.createElement("span");
+            this.commandIndicator.className = 'h4ckerCommandIndicator';
+            this.commandIndicator.innerHTML = '$&nbsp;';
+            commandBlock.appendChild(this.commandIndicator);
 
             this.commandInput = document.createElement("input");
             this.commandInput.type = "text";
