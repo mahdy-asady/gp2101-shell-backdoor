@@ -33,6 +33,7 @@
                     return;
                 }
                 myApp.mainBlock.classList.add("busy");
+                myApp.commandBlock.classList.add("hidden");
                 sendCommand(cmd);
             }
         },
@@ -78,6 +79,8 @@
                                         }else {
                                             myApp.promptUpdating = 0;
                                             myApp.commandIndicator.innerHTML = message.replace(/^\n|\n$/g, '') + " $&nbsp;";
+                                            myApp.commandBlock.classList.remove("hidden");
+                                            myApp.commandInput.focus();
                                         }
                                     }
                                 }
@@ -110,14 +113,14 @@
             this.tmpBlock.className = 'h4ckerTempBlock';
             topBlock.appendChild(this.tmpBlock);
 
-            const commandBlock = document.createElement("div");
-            commandBlock.className = 'h4ckerCommandBlock';
-            this.mainBlock.appendChild(commandBlock);
+            this.commandBlock = document.createElement("div");
+            this.commandBlock.className = 'h4ckerCommandBlock';
+            this.mainBlock.appendChild(this.commandBlock);
 
             this.commandIndicator = document.createElement("span");
             this.commandIndicator.className = 'h4ckerCommandIndicator';
             this.commandIndicator.innerHTML = '$&nbsp;';
-            commandBlock.appendChild(this.commandIndicator);
+            this.commandBlock.appendChild(this.commandIndicator);
 
             this.commandInput = document.createElement("input");
             this.commandInput.type = "text";
@@ -125,7 +128,7 @@
             this.commandInput.className = 'h4ckerCommandInput';
             this.commandInput.addEventListener('keydown', this.inputListener);
             this.commandInput.addEventListener("blur", (e) => {setTimeout(() => this.commandInput.focus({preventScroll:true}), 50)});
-            commandBlock.appendChild(this.commandInput);
+            this.commandBlock.appendChild(this.commandInput);
         }
 
     };

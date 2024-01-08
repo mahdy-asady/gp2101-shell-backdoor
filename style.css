@@ -50,3 +50,7 @@
 .busy {
     cursor: wait;
 }
+
+.hidden {
+    display: none;
+}
