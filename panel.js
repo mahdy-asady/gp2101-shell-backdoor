@@ -79,10 +79,12 @@
                             if (tmp.search("finish") > -1) {
                                 if (mon_diag_status == "1") {
                                     myApp.isRunning = 0;
-                                    myApp.tmpBlock.innerHTML = message;
+                                    if(!myApp.writeFinished) {
+                                        myApp.tmpBlock.innerHTML = message;
+                                    }
                                 } else {
                                     var stopID = window.clearInterval(myApp.intervalID);
-                                    if(myApp.writeFinished == 0) {
+                                    if(!myApp.writeFinished) {
                                         myApp.writeFinished = 1;
                                         myApp.historyBlock.innerHTML += message;
                                         myApp.tmpBlock.innerHTML = "";
