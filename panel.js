@@ -30,6 +30,7 @@
                 if(builtinCommands(cmd)) {
                     return;
                 }
+                myApp.mainBlock.classList.add("busy");
                 top.$.ajax(
                     {
                         url:"/cgi-bin/sysconf.cgi",
@@ -88,6 +89,7 @@
                                         myApp.writeFinished = 1;
                                         myApp.historyBlock.innerHTML += message;
                                         myApp.tmpBlock.innerHTML = "";
+                                        myApp.mainBlock.classList.remove("busy");
                                     }
                                 }
                                 myApp.mainBlock.scrollTo(0, myApp.mainBlock.scrollHeight);

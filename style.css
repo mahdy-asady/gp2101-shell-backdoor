@@ -46,3 +46,7 @@
 .h4ckerCommandInput:focus-visible {
     outline: none;
 }
+
+.busy {
+    cursor: wait;
+}
